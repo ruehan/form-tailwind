@@ -1,118 +1,154 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-
-const inter = Inter({ subsets: ['latin'] })
+import {useForm} from 'react-hook-form';
 
 export default function Home() {
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+    setError,
+    setValue,
+    reset,
+    resetField
+  } = useForm({ mode: "onChange" });
+
+  const onVaild = () => {
+    console.log('onVaild');
+  }
+
+  const onInvalid = (errors: any) => {
+    console.log(errors);
+  };
+
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/pages/index.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+   <>
+    <form onSubmit={handleSubmit(onVaild, onInvalid)} className="bg-blue-100 w-full h-screen flex justify-center items-center">
+      <div className="bg-red-100 w-3/12 h-5/6 rounded-2xl shadow-md shadow-black flex flex-col items-center">
+        <div className="flex justify-center items-center h-24 font-bold text-2xl">
+          Job Application Form
         </div>
+        <div className="flex flex-col items-start justify-center w-11/12 font-bold text-sm">
+          What department do you want to work for?
+          <div className="text-red-500">{errors.work?.message}</div>
+          <label className="mt-4">
+            <input
+              className="mr-2"
+              {...register('work', {required: "*required",})}
+              type="radio"
+              value="Sales" />
+              Sales
+          </label>
+          <label>
+            <input
+              className="mr-2"
+              {...register('work', {required: "*required"})}
+              type="radio"
+              value="Marketing" />
+              Marketing
+          </label>
+          <label>
+            <input
+              className="mr-2"
+              {...register('work', {required: "*required"})}
+              type="radio"
+              value="Accounting" />
+              Accounting
+          </label>
+          <label>
+            <input
+              className="mr-2"
+              {...register('work', {required: "*required"})}
+              type="radio"
+              value="Customer Service" />
+              Customer Service
+          </label>
+        </div>
+
+        <div className="flex flex-col items-start justify-center w-11/12 font-bold mt-5 text-sm">
+          Why do you want to join this company?
+          <div className="text-red-500">{errors.why?.message}</div>
+          <label className="mt-4">
+            <input
+              className="mr-2"
+              {...register('why', {required: "*required"})}
+              type="radio"
+              value="I want money" />
+              I want money!
+          </label>
+          <label>
+            <input
+              className="mr-2"
+              {...register('why', {required: "*required"})}
+              type="radio"
+              value="I love this company" />
+              I love this company
+          </label>
+          <label>
+            <input
+              className="mr-2"
+              {...register('why', {required: "*required"})}
+              type="radio"
+              value="I want to learn" />
+              I want to learn
+          </label>
+          <label >
+            <input
+              className="mr-2"
+              {...register('why', {required: "*required"})}
+              type="radio"
+              value="I don't know why" />
+              I don't know why
+          </label>
+        </div>
+
+        <div className="w-11/12 mt-5 font-bold flex-1 text-sm">
+          <label>
+            <div>Salary</div>
+            <select className='w-11/12'
+              {...register('salary', {required: true})}
+              >
+              <option>$50k</option>
+              <option>$100k</option>
+              <option>$150k</option>
+              <option>$200k</option>
+            </select>
+          </label>
+          <label>
+            <div>Introduce yourself</div>
+            <input
+              className='w-11/12 h-24'
+              {...register('introduce', {required: "Please write down your introduction."})}
+              type="text"
+              />
+              <div className="text-red-500">{errors.introduce?.message}</div>
+          </label>
+          <label>
+              <div>Tell us what your dreams are</div>
+            <input
+              className='w-11/12'
+              {...register('dreams', {required: "Please tell us what your dreams are."})}
+              type="text"
+              />
+              <div className="text-red-500">{errors.dreams?.message}</div>
+          </label>
+          <label>
+            <div>Email</div>
+            <input
+              className='w-11/12'
+              {...register('email', {required: "Please write down your email"})}
+              type="email"
+              />
+              <div className="text-red-500">{errors.email?.message}</div>
+          </label>
+
+          <div className="w-full h-12 flex justify-center mt-2">
+            <input className="bg-orange-400 w-9/12 rounded-2xl btn" type="submit" value="Give me this job" />
+          </div>
+        </div>
+
       </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Discover and deploy boilerplate example Next.js&nbsp;projects.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </form>
+   </>
   )
 }
